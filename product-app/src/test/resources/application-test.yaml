@@ -1,0 +1,7 @@
+product:
+  property:
+    name: "product-service test property"
+
+common:
+  property:
+    name: "common test property"
