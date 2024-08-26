@@ -1,27 +1,22 @@
+server:
+  port: 8081
 spring:
   application:
     name: product-service
-
-
-server:
-  port: 8081
-
+  profiles:
+    active: dev
+  config:
+    import: "optional:configserver:http://localhost:8071/"
 management:
   endpoints:
     web:
       exposure:
-        include:
-          - health
-          - info
-          - env
-          - metrics
-          - refresh
+        include: "*"
   endpoint:
     health:
       show-details: always
     refresh:
       enabled: true
-
 springdoc:
   api-docs:
     path: /v3/api-docs
