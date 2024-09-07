@@ -1,5 +1,6 @@
 server:
   port: 8081
+
 spring:
   application:
     name: product-service
@@ -7,6 +8,14 @@ spring:
     active: dev
   config:
     import: "optional:configserver:http://localhost:8071/"
+  cloud:
+    consul:
+      discovery:
+        service-name: product-service   # Register with Consul
+        prefer-ip-address: true          # Use IP address for service discovery (important when running inside Docker).
+        health-check-interval: 10s       # Check service health every 10 seconds
+        health-check-path: /actuator/health  # Health check endpoint
+
 management:
   endpoints:
     web:
@@ -17,6 +26,7 @@ management:
       show-details: always
     refresh:
       enabled: true
+
 springdoc:
   api-docs:
     path: /v3/api-docs
