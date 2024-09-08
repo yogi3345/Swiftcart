@@ -32,3 +32,11 @@ springdoc:
     path: /v3/api-docs
   swagger-ui:
     path: /swagger-ui.html
+
+logging:
+  level:
+    root: INFO
+  file:
+    name: logs/product-ms.log
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{50} - %msg%n"

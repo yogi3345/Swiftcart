@@ -12,11 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ConfigTestController {
 
-  @Autowired
-  private CommonProperties commonProperties;
+  @Autowired private CommonProperties commonProperties;
 
-  @Autowired
-  private ProductProperties productProperties;
+  @Autowired private ProductProperties productProperties;
 
   @GetMapping("/fetchprops")
   public ResponseEntity<Map<String, String>> testConfig() {
@@ -26,4 +24,3 @@ public class ConfigTestController {
     return ResponseEntity.ok(response);
   }
 }
-
