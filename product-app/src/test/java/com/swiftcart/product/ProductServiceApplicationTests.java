@@ -10,8 +10,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 class ProductServiceApplicationTests {
 
-  @Autowired
-  private CommonProperties commonProperties;
+  @Autowired private CommonProperties commonProperties;
 
   @Test
   void contextLoads() {
