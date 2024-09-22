@@ -1,48 +1,51 @@
 <configuration>
 
   <!-- Console Appender - Logs to console (stdout) -->
-  <!-- This appender is responsible for printing logs to the console, useful for local development. -->
   <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
-      <!-- Pattern defines the format of the log message printed to the console -->
       <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{FULL} - %msg%n</pattern>
-      <!-- %d{yyyy-MM-dd HH:mm:ss}: Timestamp in the format of 'YYYY-MM-DD HH:MM:SS' -->
-      <!-- [%thread]: Shows the thread name that logs the message -->
-      <!-- %-5level: Shows the log level (INFO, DEBUG, ERROR) -->
-      <!-- %logger{0}: Logger name (package and class) no character limitation -->
-      <!-- %msg: The actual log message -->
-      <!-- %n: Adds a newline at the end -->
     </encoder>
   </appender>
+
   <!-- File Appender - Logs to a rolling file -->
-  <!-- This appender writes logs to a file and rotates the log file daily. -->
   <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <!-- Specifies the name of the log file -->
     <file>logs/product-ms.log</file>
-    <!-- Rolling policy to control log file rotation -->
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <!-- Creates a new log file every day and includes the date in the file name -->
       <fileNamePattern>logs/product-ms.%d{yyyy-MM-dd}.log</fileNamePattern>
-      <!-- Keeps log files for the last 5 days -->
       <maxHistory>5</maxHistory>
     </rollingPolicy>
     <encoder>
-      <!-- Same pattern as the console appender, for consistency -->
       <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
     </encoder>
   </appender>
 
-  <!-- Root Logger - The default logger for the entire application -->
-  <!-- This controls the overall log level for the application and defines which appenders to use -->
+  <!-- Logstash Appender - Logs to Logstash via TCP -->
+  <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+    <destination>logstash:5000</destination> <!-- Logstash host and port -->
+    <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+      <providers>
+        <timestamp/>
+        <logLevel/>
+        <message/>
+        <loggerName/>
+        <threadName/>
+        <mdc>
+          <additionalField key="application" value="product-service"/>
+        </mdc>
+        <context/>
+      </providers>
+    </encoder>
+  </appender>
+
+  <!-- Root Logger - Controls the default log level and defines appenders to use -->
   <root level="info">
-    <!-- Logs will be sent to both the console and the file -->
-    <appender-ref ref="CONSOLE" />
-    <appender-ref ref="FILE" />
+    <!-- Logs will be sent to the console, file, and Logstash -->
+    <appender-ref ref="CONSOLE"/>
+    <appender-ref ref="FILE"/>
+    <appender-ref ref="LOGSTASH"/>  <!-- Add Logstash appender -->
   </root>
 
   <!-- Logger for a specific package (if needed) -->
-  <!-- You can adjust the log level for specific packages or classes. -->
-  <!-- This example sets the log level to DEBUG for the 'com.swiftcart.product' package -->
   <!--<logger name="com.swiftcart.product" level="debug" />-->
 
 </configuration>

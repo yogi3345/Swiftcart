@@ -7,14 +7,16 @@ spring:
   profiles:
     active: dev
   config:
-    import: "optional:configserver:http://localhost:8071/"
+    import: "optional:configserver:http://config-server:8071/"
   cloud:
     consul:
+      host: consul                 # Use the service name from docker-compose
+      port: 8500                   # Consul's port
       discovery:
-        service-name: product-service   # Register with Consul
-        prefer-ip-address: true          # Use IP address for service discovery (important when running inside Docker).
-        health-check-interval: 10s       # Check service health every 10 seconds
-        health-check-path: /actuator/health  # Health check endpoint
+        service-name: product-service
+        prefer-ip-address: true
+        health-check-interval: 10s
+        health-check-path: /actuator/health
 
 management:
   endpoints:
@@ -26,6 +28,9 @@ management:
       show-details: always
     refresh:
       enabled: true
+logstash:
+  host: logstash   # Use the Docker service name (logstash) instead of localhost
+  port: 5000       # Port where Logstash listens
 
 springdoc:
   api-docs:
